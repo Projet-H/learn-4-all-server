@@ -1,7 +1,9 @@
 import { BaseEntity } from './base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { SubjectEntity } from './subject.entity';
+import { ConversationEntity } from './conversation.entity';
 
-@Entity({ name: 'user' })
+@Entity({ name: 'users' })
 export class UserEntity extends BaseEntity{
 
   @Column()
@@ -18,4 +20,22 @@ export class UserEntity extends BaseEntity{
 
   @Column()
   role: Role;
+
+  @Column({type: "boolean"})
+  isConnected: boolean;
+
+  @Column({type: "boolean"})
+  isTeatcher: boolean;
+
+  @Column({type: "boolean"})
+  isStudent: boolean;
+
+  @OneToMany(() => SubjectEntity, subject => subject.user)
+  subjects: SubjectEntity[];
+
+  @OneToMany(() => ConversationEntity, conversation => conversation.teacher)
+  conversationWithStudents: ConversationEntity[];
+
+  @OneToMany(() => ConversationEntity, conversation => conversation.student)
+  conversationWithTeachers: ConversationEntity[];
 }

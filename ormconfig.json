@@ -6,11 +6,11 @@
   "password": "root",
   "database": "learn",
   "entities": [
-    "dist/**/*.entity.js"
+    "dist/src/**/*.entity.js"
   ],
   "migrationsTableName": "migrations",
   "migrations": [
-    "dist/migrations/*.js"
+    "dist/src/migrations/*.js"
   ],
   "cli": {
     "migrationsDir": "src/migrations"
