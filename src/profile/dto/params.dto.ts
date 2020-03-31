@@ -1,7 +1,7 @@
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsNumberString, IsNotEmpty } from 'class-validator';
 
 export class ParamsDto {
-  @IsInt()
+  @IsNumberString()
   @IsNotEmpty()
   id: number;
 }
