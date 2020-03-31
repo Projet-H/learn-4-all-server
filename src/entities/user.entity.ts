@@ -1,5 +1,5 @@
 import { BaseEntity } from './base.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { SubjectEntity } from './subject.entity';
 import { ConversationEntity } from './conversation.entity';
 
@@ -26,7 +26,8 @@ export class UserEntity extends BaseEntity{
   @Column({default: false})
   isConnected: boolean;
 
-  @OneToMany(() => SubjectEntity, subject => subject.user)
+  @ManyToMany(() => SubjectEntity,{cascade: ["update"]})
+  @JoinTable()
   subjects: SubjectEntity[];
 
   @OneToMany(() => ConversationEntity, conversation => conversation.teacher)

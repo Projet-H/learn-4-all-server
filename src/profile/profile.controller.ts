@@ -1,9 +1,12 @@
-import { Controller, Get, Put, Param, Body, Delete} from '@nestjs/common';
+import { Controller, Get, Put, Param, Body, Delete, UseGuards } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { EditProfileDto } from './dto/editProfile.dto';
 import { ParamsDto } from './dto/params.dto';
+import { SubjectsFollowedDto } from './dto/SubjectsFollowed.dto';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @Controller('profiles')
+@UseGuards(new JwtAuthGuard())
 export class ProfileController {
 
   constructor(private readonly profileService: ProfileService) {}
@@ -26,5 +29,10 @@ export class ProfileController {
   @Delete(':id')
   deleteProfile(@Param() params : ParamsDto) {
     return this.profileService.deleteProfile(params.id);
+  }
+
+  @Put(':id/subjects')
+  editDegreesAndSubjects(@Param() params : ParamsDto, @Body() SubjectsFollowed : SubjectsFollowedDto) {
+    return this.profileService.editDegreesAndSubjects(params.id, SubjectsFollowed);
   }
 }
