@@ -23,8 +23,17 @@ export class AuthService {
     return null;
   }
 
+  async validateToken(email: string, id: number): Promise<any> {
+    const user = await this.usersRepository.findOne({email: email});
+    if (user && user.id === id) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+
   async login(user: UserEntity) {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, id: user.id, role: user.role };
     return {
       accessToken: this.jwtService.sign(payload),
     };
