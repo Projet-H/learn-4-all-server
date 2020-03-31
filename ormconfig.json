@@ -5,12 +5,14 @@
   "username": "root",
   "password": "root",
   "database": "learn",
+  "synchronize": true,
+  "logging": true,
   "entities": [
-    "dist/src/**/*.entity.js"
+    "dist/entities/*.entity.js"
   ],
   "migrationsTableName": "migrations",
   "migrations": [
-    "dist/src/migrations/*.js"
+    "dist/migrations/*.js"
   ],
   "cli": {
     "migrationsDir": "src/migrations"
