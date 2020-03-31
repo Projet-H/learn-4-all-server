@@ -6,7 +6,7 @@ import { SubjectsFollowedDto } from './dto/SubjectsFollowed.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @Controller('profiles')
-@UseGuards(new JwtAuthGuard())
+@UseGuards(JwtAuthGuard)
 export class ProfileController {
 
   constructor(private readonly profileService: ProfileService) {}

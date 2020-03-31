@@ -60,7 +60,9 @@ export class ProfileService {
   async editDegreesAndSubjects(id : number, subjectsFollowedDto : SubjectsFollowedDto ) {
     const subjects = await this.subjectRepository.findByIds(subjectsFollowedDto.subjects);
     const user = await this.userRepository.findOne(id, {relations: ['subjects']});
-    console.log(user);
+    if(!user) {
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+    }
     for (const subject of subjects) {
       user.subjects.push(subject);
     }
