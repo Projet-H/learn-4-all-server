@@ -2,33 +2,33 @@ import { BaseEntity } from './base.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { SubjectEntity } from './subject.entity';
 import { ConversationEntity } from './conversation.entity';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity{
 
   @Column()
+  @IsNotEmpty()
   lastName: string;
 
   @Column()
+  @IsNotEmpty()
   firstName: string;
 
-  @Column()
+  @Column({unique: true})
+  @IsEmail()
   email: string;
 
   @Column()
+  @IsNotEmpty()
   password: string;
 
   @Column()
+  @IsNotEmpty()
   role: Role;
 
-  @Column({type: "boolean"})
+  @Column({default: false})
   isConnected: boolean;
-
-  @Column({type: "boolean"})
-  isTeatcher: boolean;
-
-  @Column({type: "boolean"})
-  isStudent: boolean;
 
   @OneToMany(() => SubjectEntity, subject => subject.user)
   subjects: SubjectEntity[];
