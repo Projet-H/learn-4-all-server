@@ -5,6 +5,8 @@ import { ProfileModule } from './profile/profile.module';
 import { RegisterModule } from './register/register.module';
 import { AuthModule } from './auth/auth.module';
 import { DegreeModule } from './degree/degree.module';
+import { SubjectModule } from './subject/subject.module';
+
 
 @Module({
   imports: [
@@ -12,7 +14,9 @@ import { DegreeModule } from './degree/degree.module';
     ProfileModule,
     RegisterModule,
     AuthModule,
-    DegreeModule
+    DegreeModule,
+    SubjectModule
+
   ],
 })
 export class AppModule {}
