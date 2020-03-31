@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
+import slug from 'slugify';
 
 @Controller('register')
 export class RegisterController {
@@ -13,7 +14,7 @@ export class RegisterController {
 
   @Post()
   register(@Body() user: UserEntity) : Promise<UserEntity> {
-    console.log(user);
+    user.slug = slug(user.firstName.concat(' ',user.lastName)).toLowerCase();
     return this.usersRepository.save(user);
   }
 }

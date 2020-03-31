@@ -6,6 +6,8 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity{
+  @Column()
+  slug: string;
 
   @Column()
   @IsNotEmpty()
