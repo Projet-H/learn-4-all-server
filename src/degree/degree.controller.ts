@@ -2,19 +2,20 @@ import { Body, Controller, Post, Param, Delete, Get } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DegreeEntity } from '../entities/degree.entity';
 import { Repository } from 'typeorm';
+import { DegreeDto } from './dto/degree.dto';
 
 @Controller('degree')
 export class DegreeController {
-
     constructor(
         @InjectRepository(DegreeEntity)
         private degreesRepository: Repository<DegreeEntity>,
     ){}
 
-    // créer un degree
     @Post()
-    create(@Body() degree: DegreeEntity) : Promise<DegreeEntity> {
-      return this.degreesRepository.save(degree);
+    create(@Body() degreeDto: DegreeDto) : Promise<DegreeEntity> {
+        const degree = new DegreeEntity();
+        Object.assign(degree, degreeDto);
+        return this.degreesRepository.save(degree);
     }
     
     // récupérer tous les degrees 

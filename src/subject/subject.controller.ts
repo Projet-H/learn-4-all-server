@@ -1,40 +1,37 @@
 import { Body, Controller, Post, Param, Delete, Get } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { SubjectEntity } from '../entities/subject.entity';
-import { Repository } from 'typeorm';
+import { SubjectDto } from './dto/subject.dto';
+import { SubjectService } from './subject.service';
 
-@Controller('subject')
+@Controller('subjects')
 export class SubjectController {
-
-
     constructor(
-        @InjectRepository(SubjectEntity)
-        private subjectsRepository: Repository<SubjectEntity>,
+        private subjectService: SubjectService,
     ){}
 
     // créer un subject
     @Post()
-    create(@Body() subject: SubjectEntity) : Promise<SubjectEntity> {
-      return this.subjectsRepository.save(subject);
+    create(@Body() subjectDto: SubjectDto) : Promise<SubjectEntity> {
+        return this.subjectService.create(subjectDto);
     }
     
     // récupérer tous les subject 
     @Get()
-    getall(@Body() subject: SubjectEntity){
-        return this.subjectsRepository.find();
+    findAll(){
+        return this.subjectService.findAll();
     }
     
     // récupérer un subject
     @Get(':id')
-    getone(@Param('id') subject: SubjectEntity)
+    get(@Param('id') subjectId : number)
     {
-        return this.subjectsRepository.findOne(subject);     
+        return this.subjectService.get(subjectId);
     }
 
     // supprimer un subject
     @Delete(':id')
-    remove(@Param('id')  subject: SubjectEntity) {
-        return this.subjectsRepository.delete(subject);     
+    remove(@Param('id')  subjectId: number) {
+        return this.subjectService.delete(subjectId);
     }
     
 }

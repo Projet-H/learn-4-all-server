@@ -1,10 +1,13 @@
 import { BaseEntity } from './base.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { ConversationEntity } from './conversation.entity';
 import { DegreeEntity } from './degree.entity';
+import slug from 'slugify';
 
 @Entity({ name: 'subjects' })
 export class SubjectEntity extends BaseEntity{
+  @Column()
+  slug: string;
 
   @Column()
   name: string;
@@ -14,4 +17,9 @@ export class SubjectEntity extends BaseEntity{
 
   @ManyToOne(() => DegreeEntity, degree => degree.subjects)
   degree: DegreeEntity;
+
+  @BeforeInsert()
+  updateSlug() {
+    this.slug = slug(this.name).toLowerCase();
+  }
 }
