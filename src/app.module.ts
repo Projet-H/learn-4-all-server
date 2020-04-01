@@ -6,6 +6,7 @@ import { RegisterModule } from './register/register.module';
 import { AuthModule } from './auth/auth.module';
 import { DegreeModule } from './degree/degree.module';
 import { SubjectModule } from './subject/subject.module';
+import { ConversationModule } from './conversation/conversation.module';
 
 
 @Module({
@@ -15,7 +16,8 @@ import { SubjectModule } from './subject/subject.module';
     RegisterModule,
     AuthModule,
     DegreeModule,
-    SubjectModule
+    SubjectModule,
+    ConversationModule
 
   ],
 })
