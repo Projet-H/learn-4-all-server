@@ -1,5 +1,4 @@
-import { IsEmail, IsNotIn, IsNumber, IsString } from 'class-validator';
-import { Role } from '../enums/role.enum';
+import { IsEmail, IsString } from 'class-validator';
 
 export class RegisterDto {
   @IsString()

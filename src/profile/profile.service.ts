@@ -8,6 +8,7 @@ import { DegreeEntity } from '../entities/degree.entity';
 import { SubjectEntity } from '../entities/subject.entity';
 
 import slug from 'slugify';
+import { Role } from '../enums/role.enum';
 
 
 @Injectable()
@@ -29,7 +30,6 @@ export class ProfileService {
 
   async getProfile(id : number) {
     const user = await this.userRepository.findOne({id});
-
     if(!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
@@ -46,8 +46,11 @@ export class ProfileService {
     if(editedProfile.lastName && editedProfile.firstName) {
       user.slug = slug(editedProfile.lastName.concat(' ', editedProfile.firstName)).toLowerCase();
     }
-    Object.assign(user, editedProfile);
 
+    if (user.role != Role.NONE) {
+      editedProfile.role = user.role;
+    }
+    Object.assign(user, editedProfile);
     await this.userRepository.save(user);
     return user;
   }

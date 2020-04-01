@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsEmail } from 'class-validator';
+import { IsNumber, IsString, IsEmail, IsNotIn } from 'class-validator';
 import { Role } from '../../enums/role.enum';
 
 export class EditProfileDto {
@@ -12,5 +12,6 @@ export class EditProfileDto {
   email: string;
 
   @IsNumber()
+  @IsNotIn([Role.Admin, Role.NONE])
   role: Role;
 }
