@@ -1,8 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import slug from 'slugify';
 import { RegisterService } from './register.service';
 import { RegisterDto } from './register.dto';
 

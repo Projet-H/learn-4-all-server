@@ -4,10 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { jwtConstants } from './jwt/jwt.constant';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt/jwt.strategy';
 import { LocalStrategy } from './local/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
+import { TeacherStrategy } from './roles/teacher/teacher.strategy';
+import { StudentStrategy } from './roles/student/student.strategy';
+import { AdminStrategy } from './roles/admin/admin.strategy';
+import { UserStrategy } from './roles/user/user.strategy';
+import { RoleService } from './roles/role.service';
 
 @Module({
   controllers: [AuthController],
@@ -16,10 +20,10 @@ import { AuthController } from './auth.controller';
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '600s' },
     }),
   ],
   exports: [TypeOrmModule],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
+  providers: [AuthService, LocalStrategy, TeacherStrategy, StudentStrategy, AdminStrategy, UserStrategy, RoleService],
 })
 export class AuthModule {}
