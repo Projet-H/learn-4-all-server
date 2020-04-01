@@ -3,13 +3,24 @@ import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EditProfileDto } from './dto/editProfile.dto';
+import { SubjectsFollowedDto } from './dto/SubjectsFollowed.dto';
+import { DegreeEntity } from '../entities/degree.entity';
+import { SubjectEntity } from '../entities/subject.entity';
+
 import slug from 'slugify';
+
 
 @Injectable()
 export class ProfileService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>
+    private userRepository: Repository<UserEntity>,
+
+    @InjectRepository(DegreeEntity)
+    private degreeRepository: Repository<DegreeEntity>,
+
+    @InjectRepository(SubjectEntity)
+    private subjectRepository: Repository<SubjectEntity>
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
@@ -44,6 +55,19 @@ export class ProfileService {
   async deleteProfile(id : number) {
     await this.userRepository.delete({id});
     return {};
+  }
+
+  async editDegreesAndSubjects(id : number, subjectsFollowedDto : SubjectsFollowedDto ) {
+    const subjects = await this.subjectRepository.findByIds(subjectsFollowedDto.subjects);
+    const user = await this.userRepository.findOne(id, {relations: ['subjects']});
+    if(!user) {
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+    }
+    for (const subject of subjects) {
+      user.subjects.push(subject);
+    }
+    await this.userRepository.save(user);
+    return user;
   }
 
 }
