@@ -13,7 +13,7 @@ export class RoleService  {
 
   async validate(payload: any, isNotAuthorized: Function) {
     const user = await this.validateToken(payload.email, payload.id);
-    if (isNotAuthorized(user))
+    if (user.role === undefined || isNotAuthorized(user))
       throw new UnauthorizedException();
     return { id: user.id, email: user.email, role: user.role };
   }

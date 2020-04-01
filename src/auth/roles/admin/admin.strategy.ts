@@ -4,6 +4,7 @@ import { RoleService } from '../role.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { jwtConfig} from '../../jwt/jwt.constant';
+import { Role } from '../../../enums/role.enum';
 
 @Injectable()
 export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {

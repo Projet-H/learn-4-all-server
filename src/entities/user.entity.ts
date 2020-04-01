@@ -2,6 +2,7 @@ import { BaseEntity } from './base.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { SubjectEntity } from './subject.entity';
 import { ConversationEntity } from './conversation.entity';
+import { Role } from '../enums/role.enum';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity{
