@@ -14,14 +14,12 @@ export class DegreeController {
     // créer un degree
     @Post()
     create(@Body() degree: DegreeEntity) : Promise<DegreeEntity> {
-      console.log(degree);
       return this.degreesRepository.save(degree);
     }
     
     // récupérer tous les degrees 
     @Get()
     getall(@Body() degree: DegreeEntity){
-        console.log(degree);
         return this.degreesRepository.find();
     }
     
@@ -29,14 +27,12 @@ export class DegreeController {
     @Get(':id')
     getone(@Param('id') degree: DegreeEntity)
     {
-        console.log(degree);
         return this.degreesRepository.findOne(degree);     
     }
 
     // supprimer un degree
     @Delete(':id')
     remove(@Param('id')  degree: DegreeEntity) {
-        console.log(degree);
         return this.degreesRepository.delete(degree);     
     }
     

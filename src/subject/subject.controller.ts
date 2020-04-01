@@ -15,14 +15,12 @@ export class SubjectController {
     // créer un subject
     @Post()
     create(@Body() subject: SubjectEntity) : Promise<SubjectEntity> {
-      console.log(subject);
       return this.subjectsRepository.save(subject);
     }
     
     // récupérer tous les subject 
     @Get()
     getall(@Body() subject: SubjectEntity){
-        console.log(subject);
         return this.subjectsRepository.find();
     }
     
@@ -30,14 +28,12 @@ export class SubjectController {
     @Get(':id')
     getone(@Param('id') subject: SubjectEntity)
     {
-        console.log(subject);
         return this.subjectsRepository.findOne(subject);     
     }
 
     // supprimer un subject
     @Delete(':id')
     remove(@Param('id')  subject: SubjectEntity) {
-        console.log(subject);
         return this.subjectsRepository.delete(subject);     
     }
     
