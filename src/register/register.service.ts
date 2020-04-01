@@ -1,10 +1,11 @@
-import { Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from './register.dto';
 import slug from 'slugify';
 import { EmailExistsException } from './exceptions/emailExists.exception';
+import { Role } from '../enums/role.enum';
 
 @Injectable()
 export class RegisterService {
@@ -25,6 +26,7 @@ export class RegisterService {
 
     const user = new UserEntity();
     Object.assign(user, registerDto);
+    user.role = Role.NONE;
     user.slug = slug(user.firstName.concat(' ', user.lastName)).toLowerCase();
     return this.userRepository.save(user);
   }

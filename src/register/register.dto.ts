@@ -13,8 +13,4 @@ export class RegisterDto {
 
   @IsString()
   password: string;
-
-  @IsNumber()
-  @IsNotIn([Role.Admin])
-  role: Role;
 }
