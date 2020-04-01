@@ -29,7 +29,8 @@ export class ProfileService {
   }
 
   async getProfile(id : number) {
-    const user = await this.userRepository.findOne({id});
+    const user = await this.userRepository.findOne(id, {relations: ['subjects']});
+
     if(!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }

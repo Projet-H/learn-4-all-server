@@ -57,7 +57,9 @@ const configService = new ConfigService(process.env)
     'POSTGRES_PORT',
     'POSTGRES_USER',
     'POSTGRES_PASSWORD',
-    'POSTGRES_DB'
+    'POSTGRES_DB',
+    'SOCKET_PORT',
+    'PORT'
   ]);
 
 export { configService };
