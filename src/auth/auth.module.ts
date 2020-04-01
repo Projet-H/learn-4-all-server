@@ -20,7 +20,7 @@ import { RoleService } from './roles/role.service';
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '600s' },
+      signOptions: { expiresIn: '3h' },
     }),
   ],
   exports: [TypeOrmModule],
