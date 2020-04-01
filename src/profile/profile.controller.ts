@@ -3,10 +3,10 @@ import { ProfileService } from './profile.service';
 import { EditProfileDto } from './dto/editProfile.dto';
 import { ParamsDto } from './dto/params.dto';
 import { SubjectsFollowedDto } from './dto/SubjectsFollowed.dto';
-import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
+import { UserAuthGuard } from '../auth/roles/user/user.guard';
 
 @Controller('profiles')
-@UseGuards(JwtAuthGuard)
+@UseGuards(UserAuthGuard)
 export class ProfileController {
 
   constructor(private readonly profileService: ProfileService) {}
