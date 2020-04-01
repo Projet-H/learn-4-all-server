@@ -30,7 +30,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersRepository.findOne({email: email});
-    if (user && user.password === pass) {
+    if (user && await user.comparePassword(pass)) {
       const { password, ...result } = user;
       return result;
     }
