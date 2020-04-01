@@ -1,22 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from './register.dto';
 import slug from 'slugify';
+import { EmailExistsException } from './exceptions/emailExists.exception';
 
 @Injectable()
 export class RegisterService {
+
+  private static BAD_REQUEST_STATUS = 403;
+
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>
   ) {
   }
 
-  register(registerDto: RegisterDto) : Promise<UserEntity> {
+  async register(registerDto: RegisterDto): Promise<UserEntity> {
+    const existingUser = await this.userRepository.findOne({ email: registerDto.email });
+    if (existingUser) {
+      throw new EmailExistsException(existingUser.email, RegisterService.BAD_REQUEST_STATUS);
+    }
+
     const user = new UserEntity();
     Object.assign(user, registerDto);
-    user.slug = slug(user.firstName.concat(' ',user.lastName)).toLowerCase();
+    user.slug = slug(user.firstName.concat(' ', user.lastName)).toLowerCase();
     return this.userRepository.save(user);
   }
 }
