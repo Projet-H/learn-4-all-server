@@ -69,20 +69,24 @@ export class ConversationService {
 
   queryGetAllConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
     return this.conversationRepository.find({
-      student: { id: user.id },
-      subject: {
-        slug: getConversationsDto.subjectSlug,
-        degree: { slug: getConversationsDto.degreeSlug }
-      }
+      where: [{
+        student: { id: user.id },
+        subject: {
+          slug: getConversationsDto.subjectSlug,
+          degree: { slug: getConversationsDto.degreeSlug }
+        }
+      }], relations: ['student']
     });
   }
 
   queryGetAllConversations(getConversationsDto: GetConversationsDto) {
     return this.conversationRepository.find({
-      subject: {
-        slug: getConversationsDto.subjectSlug,
-        degree: { slug: getConversationsDto.degreeSlug }
-      }
+      where: [{
+          subject: {
+            slug: getConversationsDto.subjectSlug,
+            degree: { slug: getConversationsDto.degreeSlug }
+          }
+      }], relations: ['student']
     });
   }
 }
