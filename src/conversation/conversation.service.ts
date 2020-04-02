@@ -72,13 +72,15 @@ export class ConversationService {
       .innerJoinAndSelect("c.student", "u")
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
       .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
-      .where("u.id = :userId", {userId: user.id});
+      .where("u.id = :userId", {userId: user.id})
+      .getMany();
   }
 
   queryGetAllConversations(getConversationsDto: GetConversationsDto) {
     return this.conversationRepository.createQueryBuilder("c")
       .innerJoinAndSelect("c.student", "u")
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
-      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug});
+      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
+      .getMany();
   }
 }
