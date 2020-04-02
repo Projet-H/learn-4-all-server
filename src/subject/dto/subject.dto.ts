@@ -6,4 +6,7 @@ export class SubjectDto {
 
   @IsString()
   slugDegree: string;
+
+  @IsString()
+  slug: string;
 }
