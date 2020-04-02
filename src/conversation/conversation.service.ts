@@ -10,6 +10,7 @@ import { Role } from '../enums/role.enum';
 import { SendMessageDto } from './dto/sendMessage.dto';
 import { GetConversationsDto } from './dto/getConversations.dto';
 import { MessageEntity } from '../entities/message.entity';
+import { SubjectEntity } from '../entities/subject.entity';
 
 @Injectable()
 export class ConversationService {
@@ -20,18 +21,24 @@ export class ConversationService {
     @InjectRepository(ConversationEntity)
     private conversationRepository: Repository<ConversationEntity>,
 
-    @InjectRepository(ConversationEntity)
-    private messageRepository: Repository<MessageEntity>
+    @InjectRepository(MessageEntity)
+    private messageRepository: Repository<MessageEntity>,
+
+    @InjectRepository(SubjectEntity)
+    private subjectRepository: Repository<SubjectEntity>
   )
   {}
 
   async createConversation(client : Socket, createConversationDto : CreateConversationDto) {
       const conversation = new ConversationEntity();
+      const subject = await this.queryFindSubject(createConversationDto);
+      if(!subject) client.emit('error-create-conversation', 'Subject not found');
+      conversation.subject = subject;
       conversation.student = client.handshake.user;
       Object.assign(conversation, createConversationDto);
       await this.conversationRepository.save(conversation);
       client.join(conversation.id);
-      client.emit('create-room-response', conversation);
+      client.emit('create-conversation-response', conversation);
   }
 
   async joinConversation(client : Socket, joinConversationDto : JoinConversationDto) {
@@ -82,5 +89,12 @@ export class ConversationService {
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
       .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
       .getMany();
+  }
+
+  queryFindSubject(createConversationDto: CreateConversationDto) {
+    return this.subjectRepository.createQueryBuilder("s")
+      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: createConversationDto.degreeSlug})
+      .where("s.slug = :subjectSlug", {subjectSlug: createConversationDto.subjectSlug})
+      .getOne();
   }
 }

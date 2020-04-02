@@ -1,4 +1,11 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  OnGatewayInit,
+} from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { UseGuards } from '@nestjs/common';
 import { CreateConversationDto } from './dto/createConversation.dto';

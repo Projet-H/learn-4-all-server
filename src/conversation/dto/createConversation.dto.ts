@@ -6,4 +6,10 @@ export class CreateConversationDto {
 
   @IsString()
   description: string;
+
+  @IsString()
+  subjectSlug: string;
+
+  @IsString()
+  degreeSlug: string;
 }
