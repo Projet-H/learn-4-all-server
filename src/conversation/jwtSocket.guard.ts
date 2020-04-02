@@ -7,3 +7,4 @@ export class JwtSocketGuard extends AuthGuard('webSocketStrategy') {
     return context.switchToWs().getClient().handshake;
   }
 }
+
