@@ -8,7 +8,7 @@ import { MessageEntity } from './message.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity{
-  @Column()
+  @Column({unique: true})
   slug: string;
 
   @Column()

@@ -4,7 +4,7 @@ import { EditProfileDto } from './dto/editProfile.dto';
 import { ParamsDto } from './dto/params.dto';
 import { SubjectsFollowedDto } from './dto/SubjectsFollowed.dto';
 import { UserAuthGuard } from '../auth/roles/user/user.guard';
-import { ProfileGuard } from './profile.guard';
+import { EditProfileGuard } from '../auth/roles/edit/editProfile.guard';
 
 @Controller('profiles')
 @UseGuards(UserAuthGuard)
@@ -24,19 +24,19 @@ export class ProfileController {
 
 
   @Put(':id')
-  @UseGuards(ProfileGuard)
+  @UseGuards(EditProfileGuard)
   editProfile(@Param() params : ParamsDto, @Body() editedProfile: EditProfileDto) {
     return this.profileService.editProfile(params.id, editedProfile);
   }
 
   @Delete(':id')
-  @UseGuards(ProfileGuard)
+  @UseGuards(EditProfileGuard)
   deleteProfile(@Param() params : ParamsDto) {
     return this.profileService.deleteProfile(params.id);
   }
 
   @Put(':id/subjects')
-  @UseGuards(ProfileGuard)
+  @UseGuards(EditProfileGuard)
   editDegreesAndSubjects(@Param() params : ParamsDto, @Body() SubjectsFollowed : SubjectsFollowedDto) {
     return this.profileService.editDegreesAndSubjects(params.id, SubjectsFollowed);
   }
