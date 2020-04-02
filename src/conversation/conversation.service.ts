@@ -5,6 +5,11 @@ import { Repository } from 'typeorm';
 import { ConversationEntity } from '../entities/conversation.entity';
 import { Socket } from 'socket.io';
 import { CreateConversationDto } from './dto/createConversation.dto';
+import { JoinConversationDto } from './dto/joinConversation.dto';
+import { Role } from '../enums/role.enum';
+import { SendMessageDto } from './dto/sendMessage.dto';
+import { GetConversationsDto } from './dto/getConversations.dto';
+import { MessageEntity } from '../entities/message.entity';
 
 @Injectable()
 export class ConversationService {
@@ -13,15 +18,69 @@ export class ConversationService {
     private userRepository: Repository<UserEntity>,
 
     @InjectRepository(ConversationEntity)
-    private conversationRepository: Repository<ConversationEntity>
+    private conversationRepository: Repository<ConversationEntity>,
+
+    @InjectRepository(ConversationEntity)
+    private messageRepository: Repository<MessageEntity>
   )
   {}
 
-  async createRoom(client : Socket, createConversationDto : CreateConversationDto) {
+  async createConversation(client : Socket, createConversationDto : CreateConversationDto) {
       const conversation = new ConversationEntity();
+      conversation.student = client.handshake.user;
       Object.assign(conversation, createConversationDto);
-      await this.userRepository.save(conversation);
-      client.join(conversation.title);
+      await this.conversationRepository.save(conversation);
+      client.join(conversation.id);
       client.emit('create-room-response', conversation);
+  }
+
+  async joinConversation(client : Socket, joinConversationDto : JoinConversationDto) {
+      const conversation = await this.conversationRepository.findOne(joinConversationDto.id, {relations: ['teacher', 'messages']});
+      if(!conversation.teacher && client.handshake.user.role == Role.Teacher) {
+        conversation.teacher = client.handshake.user;
+        await this.conversationRepository.save(conversation);
+      }
+      client.join(conversation.id);
+      client.emit('join-conversation-response', conversation);
+      client.to(conversation.id).emit('user-joined-conversation', client.handshake.user);
+  }
+
+  async sendMessage(client: Socket, sendMessageDto: SendMessageDto) {
+      const conversation = await this.conversationRepository.findOne(sendMessageDto.conversationId);
+      const message = new MessageEntity();
+      delete sendMessageDto.conversationId;
+      message.user = client.handshake.user;
+      message.conversation = conversation;
+      Object.assign(message, sendMessageDto);
+      await this.messageRepository.save(conversation);
+      client.to(conversation.id).emit('sent-message', message);
+  }
+
+  async getConversations(client: Socket, getConversationsDto : GetConversationsDto) {
+    const user = client.handshake.user;
+    let conversations;
+    if(user.role == Role.Student) {
+      conversations = await this.queryGetConversationsStudent(getConversationsDto, user);
+    } else {
+      conversations = await this.queryGetAllConversations(getConversationsDto);
+    }
+    client.emit('get-conversations-response', conversations);
+  }
+
+  queryGetConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
+    return this.conversationRepository.createQueryBuilder("c")
+      .innerJoinAndSelect("c.student", "u")
+      .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
+      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
+      .where("u.id = :userId", {userId: user.id})
+      ;
+  }
+
+  queryGetAllConversations(getConversationsDto: GetConversationsDto) {
+    return this.conversationRepository.createQueryBuilder("c")
+      .innerJoinAndSelect("c.student", "u")
+      .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
+      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
+      ;
   }
 }

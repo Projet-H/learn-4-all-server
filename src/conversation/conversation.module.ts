@@ -6,11 +6,12 @@ import { ConversationService } from './conversation.service';
 import { UserEntity } from '../entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/jwt/jwt.constant';
+import { MessageEntity } from '../entities/message.entity';
 
 @Module({
   providers: [ConversationGateway, ConversationService],
   imports: [
-    TypeOrmModule.forFeature([ConversationEntity,UserEntity]),
+    TypeOrmModule.forFeature([ConversationEntity,UserEntity,MessageEntity]),
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '3h' },
