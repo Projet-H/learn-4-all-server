@@ -5,19 +5,24 @@ import { RoleService } from '../role.service';
 import { jwtConfigWs } from '../../jwt/jwt.constant';
 import { UserEntity } from '../../../entities/user.entity';
 import { WsException } from '@nestjs/websockets';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class WebSocketStrategy extends PassportStrategy(Strategy, 'webSocketStrategy') {
 
-  constructor(private roleService: RoleService) {
+  constructor(
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
+  ) {
     super(jwtConfigWs);
   }
 
   async validate(payload: any) {
-    return this.roleService.validate(payload, this.isNotAuthorized, new WsException(""))
-  }
-
-  isNotAuthorized(user: UserEntity): boolean {
-    return false;
+    const user = this.usersRepository.findOne(payload.id);
+    if(!user) {
+      throw new WsException('Unauthorized');
+    }
+    return user;
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { UserEntity } from '../../../entities/user.entity';
 import { RoleService } from '../role.service';
 import { PassportStrategy } from '@nestjs/passport';
@@ -13,7 +13,7 @@ export class UserStrategy extends PassportStrategy(Strategy, 'user') {
   }
 
   async validate(payload: any) {
-    return this.roleService.validate(payload, this.isNotAuthorized, new UnauthorizedException())
+    return this.roleService.validate(payload, this.isNotAuthorized)
   }
 
   protected isNotAuthorized(user: UserEntity): boolean {
