@@ -5,5 +5,5 @@ export class SubjectDto {
   name: string;
 
   @IsString()
-  slugdegree: string;
+  slugDegree: string;
 }
