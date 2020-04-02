@@ -48,7 +48,7 @@ export class ProfileService {
       user.slug = slug(editedProfile.lastName.concat(' ', editedProfile.firstName)).toLowerCase();
     }
 
-    if (user.role != Role.NONE) {
+    if (ProfileService.isRoleAlreadySet(user)) {
       editedProfile.role = user.role;
     }
     Object.assign(user, editedProfile);
@@ -72,6 +72,10 @@ export class ProfileService {
     }
     await this.userRepository.save(user);
     return user;
+  }
+
+  private static isRoleAlreadySet(user: UserEntity) : boolean {
+    return user.role != Role.NONE;
   }
 
 }
