@@ -10,8 +10,6 @@ import { Role } from '../enums/role.enum';
 @Injectable()
 export class RegisterService {
 
-  private static BAD_REQUEST_STATUS = 403;
-
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>
@@ -21,7 +19,7 @@ export class RegisterService {
   async register(registerDto: RegisterDto): Promise<UserEntity> {
     const existingUser = await this.userRepository.findOne({ email: registerDto.email });
     if (existingUser) {
-      throw new EmailExistsException(existingUser.email, RegisterService.BAD_REQUEST_STATUS);
+      throw new EmailExistsException(existingUser.email);
     }
 
     const user = new UserEntity();

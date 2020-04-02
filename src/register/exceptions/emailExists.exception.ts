@@ -1,10 +1,10 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class EmailExistsException extends HttpException {
 
-  constructor(email: string, status: number) {
+  constructor(email: string) {
     const errorMessage : string = email + " already exists";
-    super(errorMessage, status);
+    super(errorMessage, HttpStatus.BAD_REQUEST);
   }
 
 }

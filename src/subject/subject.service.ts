@@ -4,6 +4,7 @@ import { SubjectDto } from './dto/subject.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DegreeEntity } from '../entities/degree.entity';
+import { SubjectNotFoundException } from './exceptions/subjectNotFound.exception';
 
 @Injectable()
 export class SubjectService {
@@ -29,13 +30,12 @@ export class SubjectService {
   async get(id: number) {
     const subject = await this.subjectsRepository.findOne(id);
     if(!subject) {
-      throw new HttpException('Subject not found.', HttpStatus.NOT_FOUND);
+      throw new SubjectNotFoundException(id);
     }
     return subject;
   }
 
   async delete(id: number){
-    await this.subjectsRepository.delete(id);
-    return {};
+    return await this.subjectsRepository.delete(id);
   }
 }
