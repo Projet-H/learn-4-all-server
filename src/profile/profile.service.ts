@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -28,13 +28,13 @@ export class ProfileService {
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
-    return await this.userRepository.find({});
+    return await this.userRepository.find();
   }
 
   async getProfile(id : number) {
     const user = await this.userRepository.findOne(id, {relations: ['subjects']});
     if(!user) {
-      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+      throw new UserNotFoundException(id);
     }
     return user;
   }
@@ -59,8 +59,7 @@ export class ProfileService {
   }
 
   async deleteProfile(id : number) {
-    await this.userRepository.delete({id});
-    return {};
+    return await this.userRepository.delete({id: id});
   }
 
   async editDegreesAndSubjects(id : number, subjectsFollowedDto : SubjectsFollowedDto ) {
@@ -72,8 +71,7 @@ export class ProfileService {
     for (const subject of subjects) {
       user.subjects.push(subject);
     }
-    await this.userRepository.save(user);
-    return user;
+    return await this.userRepository.save(user);
   }
 
   private static isRoleAlreadySet(user: UserEntity) : boolean {
