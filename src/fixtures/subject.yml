@@ -3,7 +3,9 @@ parameters: {}
 items:
   math:
     name: 'Math'
+    slug: 'math'
     degree: '@bts'
   english:
     name: 'English'
+    slug: 'english'
     degree: '@dut'

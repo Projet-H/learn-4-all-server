@@ -7,10 +7,10 @@ import { MessageEntity } from './message.entity';
 @Entity({ name: 'conversations' })
 export class ConversationEntity extends BaseEntity{
 
-  @Column({type: "varchar"})
+  @Column()
   title: string;
 
-  @Column({type: "varchar"})
+  @Column()
   description: string;
 
   @ManyToOne(() => SubjectEntity, subject => subject.conversations)

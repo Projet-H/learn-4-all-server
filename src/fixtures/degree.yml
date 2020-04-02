@@ -3,5 +3,7 @@ parameters: {}
 items:
   bts:
     name: 'BTS'
+    slug: 'bts'
   dut:
     name: 'DUT'
+    slug: 'dut'

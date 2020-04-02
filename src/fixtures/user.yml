@@ -22,3 +22,10 @@ items:
     password: 'admin'
     role: 2
     slug: 'admin'
+  new:
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+    email: 'new@gmail.com'
+    password: 'new'
+    role: 3
+    slug: 'new'

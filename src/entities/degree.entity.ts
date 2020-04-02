@@ -1,10 +1,11 @@
 import { BaseEntity } from './base.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 import { SubjectEntity } from './subject.entity';
 import slug from 'slugify';
 
 @Entity({ name: 'degrees' })
 export class DegreeEntity extends BaseEntity{
+
   @Column()
   slug: string;
 

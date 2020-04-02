@@ -1,0 +1,19 @@
+entity: MessageEntity
+parameters: {}
+items:
+  pythagoras-m1:
+    content: '{{lorem.paragraphs}}'
+    conversation: '@pythagoras'
+    user: '@student'
+  pythagoras-m2:
+    content: '{{lorem.paragraphs}}'
+    conversation: '@pythagoras'
+    user: '@teacher'
+  pythagoras-m3:
+    content: '{{lorem.paragraphs}}'
+    conversation: '@pythagoras'
+    user: '@student'
+  pythagoras-m4:
+    content: '{{lorem.paragraphs}}'
+    conversation: '@pythagoras'
+    user: '@student'
