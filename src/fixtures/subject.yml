@@ -4,8 +4,10 @@ items:
   math:
     name: 'Math'
     slug: 'math'
+    active: true
     degree: '@bts'
   english:
     name: 'English'
     slug: 'english'
+    active: true
     degree: '@dut'

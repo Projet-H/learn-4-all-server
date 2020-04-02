@@ -1,41 +1,35 @@
 import { Body, Controller, Post, Param, Delete, Get, UseGuards } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { DegreeEntity } from '../entities/degree.entity';
-import { Repository } from 'typeorm';
 import { DegreeDto } from './degree.dto';
 import { UserAuthGuard } from '../auth/roles/user/user.guard';
 import { AdminAuthGuard } from '../auth/roles/admin/admin.guard';
+import { DegreeService } from './degree.service';
 
 @UseGuards(UserAuthGuard)
 @Controller('degree')
 export class DegreeController {
 
-    constructor(
-        @InjectRepository(DegreeEntity)
-        private degreesRepository: Repository<DegreeEntity>,
-    ){}
+    constructor(private degreeService: DegreeService){}
 
     @Post()
     create(@Body() degreeDto: DegreeDto) : Promise<DegreeEntity> {
-        const degree = new DegreeEntity();
-        Object.assign(degree, degreeDto);
-        return this.degreesRepository.save(degree);
+        return this.degreeService.create(degreeDto);
     }
 
     @Get()
-    getAll(){
-        return this.degreesRepository.find();
+    getAll() {
+        return this.degreeService.getAll();
     }
 
     @Get(':slug')
     getOne(@Param('slug') slug: string) {
-        return this.degreesRepository.findOne({slug: slug}, {relations: ['subjects']});
+        return this.degreeService.getOne(slug);
     }
 
     @Delete(':id')
     @UseGuards(AdminAuthGuard)
     remove(@Param('id')  id: number) {
-        return this.degreesRepository.delete(id);
+        return this.degreeService.remove(id);
     }
     
 }

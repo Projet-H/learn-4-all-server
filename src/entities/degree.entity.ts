@@ -12,6 +12,9 @@ export class DegreeEntity extends BaseEntity{
   @Column()
   name: string;
 
+  @Column()
+  active: boolean;
+
   @OneToMany(() => SubjectEntity, subject => subject.degree)
   subjects: SubjectEntity[];
 

@@ -4,6 +4,12 @@ items:
   bts:
     name: 'BTS'
     slug: 'bts'
+    active: true
   dut:
     name: 'DUT'
     slug: 'dut'
+    active: true
+  bac-s:
+    name: 'Bac S'
+    slug: 'bac-s'
+    active: false

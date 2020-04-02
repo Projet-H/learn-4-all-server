@@ -12,6 +12,9 @@ export class SubjectEntity extends BaseEntity{
   @Column()
   name: string;
 
+  @Column()
+  active: boolean;
+
   @OneToMany(() => ConversationEntity, conversation => conversation.subject)
   conversations: ConversationEntity[];
 
