@@ -27,7 +27,7 @@ export class DegreeController {
     @Get(':slug')
     getOne(@Param('slug') slug: string)
     {
-        return this.degreesRepository.findOne({slug: slug});
+        return this.degreesRepository.findOne({slug: slug}, {relations: ['subjects']});
     }
 
     @Delete(':id')
