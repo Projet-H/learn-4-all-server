@@ -4,6 +4,6 @@ export class SubjectDto {
   @IsString()
   name: string;
 
-  @IsInt()
-  degreeId: number;
+  @IsString()
+  slugdegree: string;
 }

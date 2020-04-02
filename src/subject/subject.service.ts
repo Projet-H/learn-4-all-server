@@ -15,9 +15,10 @@ export class SubjectService {
   ){}
 
   async create(subjectDto: SubjectDto) {
+    const degree = await this.degreeRepository.findOne({slug: subjectDto.slugDegree});
     const subject = new SubjectEntity();
-    subject.degree = await this.degreeRepository.findOne(subjectDto.degreeId);
     Object.assign(subject, subjectDto);
+    subject.degree = degree;
     return this.subjectsRepository.save(subject);
   }
 
