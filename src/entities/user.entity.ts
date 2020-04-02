@@ -4,6 +4,7 @@ import { SubjectEntity } from './subject.entity';
 import { ConversationEntity } from './conversation.entity';
 import { Role } from '../enums/role.enum';
 import * as bcrypt from 'bcrypt';
+import { MessageEntity } from './message.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity{
@@ -37,6 +38,9 @@ export class UserEntity extends BaseEntity{
 
   @OneToMany(() => ConversationEntity, conversation => conversation.student)
   conversationWithTeachers: ConversationEntity[];
+
+  @OneToMany(() => MessageEntity, message => message.user)
+  messages: MessageEntity[];
 
   @BeforeInsert()
   async hashPassword() {
