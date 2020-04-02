@@ -1,8 +1,11 @@
-import { Body, Controller, Post, Param, Delete, Get } from '@nestjs/common';
+import { Body, Controller, Post, Param, Delete, Get, UseGuards } from '@nestjs/common';
 import { SubjectEntity } from '../entities/subject.entity';
 import { SubjectDto } from './dto/subject.dto';
 import { SubjectService } from './subject.service';
+import { UserAuthGuard } from '../auth/roles/user/user.guard';
+import { AdminAuthGuard } from '../auth/roles/admin/admin.guard';
 
+@UseGuards(UserAuthGuard)
 @Controller('subjects')
 export class SubjectController {
 
@@ -25,6 +28,7 @@ export class SubjectController {
         return this.subjectService.get(subjectId);
     }
 
+    @UseGuards(AdminAuthGuard)
     @Delete(':id')
     remove(@Param('id')  subjectId: number) {
         return this.subjectService.delete(subjectId);

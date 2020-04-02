@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SubjectEntity } from '../entities/subject.entity';
 import { SubjectDto } from './dto/subject.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,7 @@ import { SubjectNotFoundException } from './exceptions/subjectNotFound.exception
 
 @Injectable()
 export class SubjectService {
+
   constructor(
     @InjectRepository(SubjectEntity)
     private subjectsRepository: Repository<SubjectEntity>,
@@ -24,7 +25,7 @@ export class SubjectService {
   }
 
   async findAll() {
-    return await this.subjectsRepository.find({});
+    return await this.subjectsRepository.find();
   }
 
   async get(id: number) {
