@@ -9,3 +9,9 @@ export const jwtConfig = {
   ignoreExpiration: false,
   secretOrKey: jwtConstants.secret
 };
+
+export const jwtConfigWs = {
+  jwtFromRequest: ExtractJwt.fromUrlQueryParameter('token'),
+  ignoreExpiration: false,
+  secretOrKey: jwtConstants.secret
+};
