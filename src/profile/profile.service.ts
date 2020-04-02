@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -9,6 +9,8 @@ import { SubjectEntity } from '../entities/subject.entity';
 
 import slug from 'slugify';
 import { Role } from '../enums/role.enum';
+import { UserNotFoundException } from './exceptions/userNotFound.exception';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
@@ -21,27 +23,26 @@ export class ProfileService {
     private degreeRepository: Repository<DegreeEntity>,
 
     @InjectRepository(SubjectEntity)
-    private subjectRepository: Repository<SubjectEntity>
+    private subjectRepository: Repository<SubjectEntity>,
+    private jwtService: JwtService
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
-    return await this.userRepository.find({});
+    return await this.userRepository.find();
   }
 
   async getProfile(id : number) {
     const user = await this.userRepository.findOne(id, {relations: ['subjects']});
-
     if(!user) {
-      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+      throw new UserNotFoundException(id);
     }
-
     return user;
   }
 
   async editProfile(id : number, editedProfile: EditProfileDto) {
     const user = await this.userRepository.findOne({id});
     if(!user) {
-      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+      throw new UserNotFoundException(id);
     }
 
     if(editedProfile.lastName && editedProfile.firstName) {
@@ -52,26 +53,25 @@ export class ProfileService {
       editedProfile.role = user.role;
     }
     Object.assign(user, editedProfile);
-    await this.userRepository.save(user);
-    return user;
+    const userUpdated : UserEntity = await this.userRepository.save(user);
+    const payload = { email: userUpdated.email, id: userUpdated.id, role: userUpdated.role };
+    return {accessToken: this.jwtService.sign(payload)};
   }
 
   async deleteProfile(id : number) {
-    await this.userRepository.delete({id});
-    return {};
+    return await this.userRepository.delete({id: id});
   }
 
   async editDegreesAndSubjects(id : number, subjectsFollowedDto : SubjectsFollowedDto ) {
     const subjects = await this.subjectRepository.findByIds(subjectsFollowedDto.subjects);
     const user = await this.userRepository.findOne(id, {relations: ['subjects']});
     if(!user) {
-      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+      throw new UserNotFoundException(id);
     }
     for (const subject of subjects) {
       user.subjects.push(subject);
     }
-    await this.userRepository.save(user);
-    return user;
+    return await this.userRepository.save(user);
   }
 
   private static isRoleAlreadySet(user: UserEntity) : boolean {
