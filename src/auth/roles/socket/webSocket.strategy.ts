@@ -4,6 +4,7 @@ import { Strategy } from 'passport-jwt';
 import { RoleService } from '../role.service';
 import { jwtConfigWs } from '../../jwt/jwt.constant';
 import { UserEntity } from '../../../entities/user.entity';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class WebSocketStrategy extends PassportStrategy(Strategy, 'webSocketStrategy') {
@@ -13,7 +14,7 @@ export class WebSocketStrategy extends PassportStrategy(Strategy, 'webSocketStra
   }
 
   async validate(payload: any) {
-    return this.roleService.validate(payload, this.isNotAuthorized)
+    return this.roleService.validate(payload, this.isNotAuthorized, new WsException(""))
   }
 
   isNotAuthorized(user: UserEntity): boolean {
