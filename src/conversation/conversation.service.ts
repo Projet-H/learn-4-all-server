@@ -60,14 +60,14 @@ export class ConversationService {
     const user = client.handshake.user;
     let conversations;
     if(user.role == Role.Student) {
-      conversations = await this.queryGetConversationsStudent(getConversationsDto, user);
+      conversations = await this.queryGetAllConversationsStudent(getConversationsDto, user);
     } else {
       conversations = await this.queryGetAllConversations(getConversationsDto);
     }
     client.emit('get-conversations-response', conversations);
   }
 
-  queryGetConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
+  queryGetAllConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
     return this.conversationRepository.find({
       student: { id: user.id },
       subject: {
