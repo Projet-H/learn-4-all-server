@@ -3,7 +3,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { RoleService } from '../role.service';
 import { jwtConfigWs } from '../../jwt/jwt.constant';
-import { WsException } from '@nestjs/websockets';
 import { UserEntity } from '../../../entities/user.entity';
 
 @Injectable()
@@ -14,14 +13,10 @@ export class WebSocketStrategy extends PassportStrategy(Strategy, 'webSocketStra
   }
 
   async validate(payload: any) {
-    return this.roleService.validate(payload, this.isNotAuthorized, this.getException())
+    return this.roleService.validate(payload, this.isNotAuthorized)
   }
 
   isNotAuthorized(user: UserEntity): boolean {
     return false;
-  }
-
-  protected getException() : any {
-    return new WsException("Wrong id");
   }
 }
