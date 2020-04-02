@@ -12,6 +12,7 @@ import { StudentStrategy } from './roles/student/student.strategy';
 import { AdminStrategy } from './roles/admin/admin.strategy';
 import { UserStrategy } from './roles/user/user.strategy';
 import { RoleService } from './roles/role.service';
+import { WebSocketStrategy } from './roles/socket/webSocket.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -24,6 +25,6 @@ import { RoleService } from './roles/role.service';
     }),
   ],
   exports: [TypeOrmModule],
-  providers: [AuthService, LocalStrategy, TeacherStrategy, StudentStrategy, AdminStrategy, UserStrategy, RoleService],
+  providers: [AuthService, LocalStrategy, TeacherStrategy, StudentStrategy, AdminStrategy, UserStrategy, RoleService, WebSocketStrategy],
 })
 export class AuthModule {}

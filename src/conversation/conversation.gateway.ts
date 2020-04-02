@@ -1,12 +1,12 @@
 import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { UseGuards } from '@nestjs/common';
-import { JwtSocketGuard } from './jwtSocket.guard';
 import { CreateConversationDto } from './dto/createConversation.dto';
 import { ConversationService } from './conversation.service';
+import { WebSocketGuard } from '../auth/roles/socket/webSocket.guard';
 
 @WebSocketGateway(Number(process.env.SOCKET_PORT))
-@UseGuards(JwtSocketGuard)
+@UseGuards(WebSocketGuard)
 export class ConversationGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private conversationService: ConversationService) {}
 

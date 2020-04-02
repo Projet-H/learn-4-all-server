@@ -5,13 +5,12 @@ import { ConversationEntity } from 'src/entities/conversation.entity';
 import { ConversationGateway } from './conversation.gateway';
 import { ConversationService } from './conversation.service';
 import { UserEntity } from '../entities/user.entity';
-import { WebSocketStrategy } from './webSocket.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/jwt/jwt.constant';
 
 @Module({
   controllers: [ConversationController],
-  providers: [ConversationGateway, ConversationService, WebSocketStrategy],
+  providers: [ConversationGateway, ConversationService],
   imports: [
     TypeOrmModule.forFeature([ConversationEntity,UserEntity]),
     JwtModule.register({

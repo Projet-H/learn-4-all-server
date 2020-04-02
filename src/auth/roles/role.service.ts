@@ -14,7 +14,7 @@ export class RoleService  {
   async validate(payload: any, isNotAuthorized: Function) {
     const user = await this.validateToken(payload.email, payload.id);
     if (user.role === undefined || isNotAuthorized(user))
-      throw new UnauthorizedException();
+      throw this.getException();
     return { id: user.id, email: user.email, role: user.role };
   }
 
@@ -24,6 +24,10 @@ export class RoleService  {
       const { password, ...result } = user;
       return result;
     }
-    throw new UnauthorizedException();
+    throw this.getException();
+  }
+
+  protected getException() : any {
+    return new UnauthorizedException();
   }
 }

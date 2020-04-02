@@ -17,6 +17,6 @@ export class UserStrategy extends PassportStrategy(Strategy, 'user') {
   }
 
   protected isNotAuthorized(user: UserEntity): boolean {
-    return user.role == undefined;
+    return false;
   }
 }
