@@ -1,8 +1,8 @@
 import { IsString } from 'class-validator';
 
-export class CreateRoomDto {
+export class CreateConversationDto {
   @IsString()
-  name: string;
+  title: string;
 
   @IsString()
   description: string;

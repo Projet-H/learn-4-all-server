@@ -2,13 +2,14 @@ import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnectio
 import { Socket, Server } from 'socket.io';
 import { UseGuards } from '@nestjs/common';
 import { JwtSocketGuard } from './jwtSocket.guard';
-import { CreateRoomDto } from './dto/createRoom.dto';
+import { CreateConversationDto } from './dto/createConversation.dto';
 import { ConversationService } from './conversation.service';
 
 @WebSocketGateway(Number(process.env.SOCKET_PORT))
 @UseGuards(JwtSocketGuard)
 export class ConversationGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  conversationService : ConversationService;
+  constructor(private conversationService: ConversationService) {}
+
   @WebSocketServer() server: Server;
 
   afterInit() {
@@ -16,10 +17,8 @@ export class ConversationGateway implements OnGatewayInit, OnGatewayConnection, 
   }
 
   @SubscribeMessage('create-room')
-  async onCreateRoom(client: Socket, createRoomDto : CreateRoomDto) {
-    this.conversationService.createRoom(client, createRoomDto);
-    console.log(createRoomDto, client.handshake);
-    //client.broadcast.emit('chat', message);
+  onCreateRoom(client: Socket, createRoomDto : CreateConversationDto) {
+    return this.conversationService.createRoom(client, createRoomDto);
   }
 
   handleConnection(): any {
