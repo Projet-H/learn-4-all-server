@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConversationController } from './conversation.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConversationEntity } from 'src/entities/conversation.entity';
 import { ConversationGateway } from './conversation.gateway';
@@ -9,7 +8,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/jwt/jwt.constant';
 
 @Module({
-  controllers: [ConversationController],
   providers: [ConversationGateway, ConversationService],
   imports: [
     TypeOrmModule.forFeature([ConversationEntity,UserEntity]),
