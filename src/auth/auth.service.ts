@@ -19,9 +19,7 @@ export class AuthService {
     let user = await this.usersRepository.findOne({email: authDto.email});
     user = await this.setConnected(user, true);
     const payload = { email: user.email, id: user.id, role: user.role };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    return {accessToken: this.jwtService.sign(payload)};
   }
 
   async logout(request) {
