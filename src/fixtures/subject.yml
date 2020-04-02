@@ -1,0 +1,9 @@
+entity: SubjectEntity
+parameters: {}
+items:
+  math:
+    name: 'Math'
+    degree: '@bts'
+  english:
+    name: 'English'
+    degree: '@dut'

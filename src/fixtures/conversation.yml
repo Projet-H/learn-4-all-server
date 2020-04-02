@@ -1,0 +1,9 @@
+entity: ConversationEntity
+parameters: {}
+items:
+  pythagoras:
+    title: 'Problem pythagoras'
+    description: 'I did not understand how can i apply the theorem'
+    student: '@student'
+    teacher: '@teacher'
+    subject: '@math'

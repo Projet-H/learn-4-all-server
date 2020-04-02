@@ -1,0 +1,24 @@
+entity: UserEntity
+parameters: {}
+items:
+  student:
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+    email: 'student@gmail.com'
+    password: 'student'
+    role: 1
+    slug: 'student'
+  teacher:
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+    email: 'teacher@gmail.com'
+    password: 'teacher'
+    role: 0
+    slug: 'teacher'
+  admin:
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+    email: 'admin@gmail.com'
+    password: 'admin'
+    role: 2
+    slug: 'admin'
