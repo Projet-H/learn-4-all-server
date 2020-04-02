@@ -68,19 +68,21 @@ export class ConversationService {
   }
 
   queryGetConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
-    return this.conversationRepository.createQueryBuilder("c")
-      .innerJoinAndSelect("c.student", "u")
-      .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
-      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
-      .where("u.id = :userId", {userId: user.id})
-      ;
+    return this.conversationRepository.findOne({
+      student: { id: user.id },
+      subject: {
+        slug: getConversationsDto.subjectSlug,
+        degree: { slug: getConversationsDto.degreeSlug }
+      }
+    }, {relations: ['student', 'teacher']});
   }
 
   queryGetAllConversations(getConversationsDto: GetConversationsDto) {
-    return this.conversationRepository.createQueryBuilder("c")
-      .innerJoinAndSelect("c.student", "u")
-      .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
-      .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
-      ;
+    return this.conversationRepository.findOne({
+      subject: {
+        slug: getConversationsDto.subjectSlug,
+        degree: { slug: getConversationsDto.degreeSlug }
+      }
+    }, {relations: ['student', 'teacher']});
   }
 }
