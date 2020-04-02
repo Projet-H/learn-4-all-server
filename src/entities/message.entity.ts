@@ -6,7 +6,7 @@ import { UserEntity } from './user.entity';
 @Entity({ name: 'messages' })
 export class MessageEntity extends BaseEntity{
 
-  @Column({type: "varchar"})
+  @Column({type: "text"})
   content: string;
 
   @ManyToOne(() => UserEntity, user => user.messages)

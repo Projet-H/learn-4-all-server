@@ -2,10 +2,11 @@ import { Body, Controller, Post, Param, Delete, Get } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DegreeEntity } from '../entities/degree.entity';
 import { Repository } from 'typeorm';
-import { DegreeDto } from './dto/degree.dto';
+import { DegreeDto } from './degree.dto';
 
 @Controller('degree')
 export class DegreeController {
+
     constructor(
         @InjectRepository(DegreeEntity)
         private degreesRepository: Repository<DegreeEntity>,
@@ -17,24 +18,21 @@ export class DegreeController {
         Object.assign(degree, degreeDto);
         return this.degreesRepository.save(degree);
     }
-    
-    // récupérer tous les degrees 
+
     @Get()
-    getall(@Body() degree: DegreeEntity){
+    getAll(){
         return this.degreesRepository.find();
     }
-    
-    // récupérer un degree
-    @Get(':id')
-    getone(@Param('id') degree: DegreeEntity)
+
+    @Get(':slug')
+    getOne(@Param('slug') slug: string)
     {
-        return this.degreesRepository.findOne(degree);     
+        return this.degreesRepository.findOne({slug: slug});
     }
 
-    // supprimer un degree
     @Delete(':id')
-    remove(@Param('id')  degree: DegreeEntity) {
-        return this.degreesRepository.delete(degree);     
+    remove(@Param('id')  id: number) {
+        return this.degreesRepository.delete(id);
     }
     
 }

@@ -1,5 +1,5 @@
 import { BaseEntity } from './base.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { ConversationEntity } from './conversation.entity';
 import { DegreeEntity } from './degree.entity';
 import slug from 'slugify';
