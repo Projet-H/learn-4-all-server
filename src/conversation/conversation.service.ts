@@ -12,6 +12,7 @@ import { GetConversationsDto } from './dto/getConversations.dto';
 import { MessageEntity } from '../entities/message.entity';
 import { SubjectEntity } from '../entities/subject.entity';
 import { ReportMessageDto } from './dto/reportMessage.dto';
+import { GetConversationDto } from './dto/getConversation.dto';
 
 @Injectable()
 export class ConversationService {
@@ -82,11 +83,11 @@ export class ConversationService {
     client.emit('get-conversations-response', conversations);
   }
 
-  // async getConversation(client: Socket, getConversationsDto : GetConversationsDto) {
-  //   const user = client.handshake.user;
-  //   const conversation: ConversationEntity = await this.conversationRepository.findOne();
-  //   client.emit('get-conversation-response', conversation);
-  // }
+  async getConversation(client: Socket, getConversationDto : GetConversationDto) {
+    const conversation: ConversationEntity = await this.conversationRepository.findOne(getConversationDto.id);
+    const messages: MessageEntity[] = await this.messageRepository.find({ where: [{ conversation: conversation }], relations: ['user', 'conversation']});
+    client.emit('get-conversation-response', messages);
+  }
 
   queryGetAllConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
     return this.conversationRepository.createQueryBuilder("c")
