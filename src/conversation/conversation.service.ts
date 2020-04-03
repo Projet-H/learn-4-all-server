@@ -65,9 +65,9 @@ export class ConversationService {
   }
 
   async reportMessage(client: Socket, reportMessage: ReportMessageDto) {
-    let message: MessageEntity = await this.messageRepository.findOne(reportMessage.id, {relations: ['conversation']});
+    const message: MessageEntity = await this.messageRepository.findOne(reportMessage.id, {relations: ['conversation']});
     message.reported = true;
-    message = await this.messageRepository.save(message);
+    await this.messageRepository.save(message);
     client.to(message.conversation.id).emit('report-message', message);
   }
 
