@@ -85,7 +85,10 @@ export class ConversationService {
 
   async getConversation(client: Socket, getConversationDto : GetConversationDto) {
     const conversation: ConversationEntity = await this.conversationRepository.findOne(getConversationDto.id);
-    const messages: MessageEntity[] = await this.messageRepository.find({ where: [{ conversation: conversation }], relations: ['user', 'conversation']});
+    const messages: MessageEntity[] = await this.messageRepository.find({
+      where: { conversation: conversation },
+      order: {createDateTime: 'ASC'},
+      relations: ['user', 'conversation']});
     client.emit('get-conversation-response', messages);
   }
 
