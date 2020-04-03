@@ -3,7 +3,7 @@ import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, OneToMany } from '
 import { SubjectEntity } from './subject.entity';
 import { ConversationEntity } from './conversation.entity';
 import { Role } from '../enums/role.enum';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { MessageEntity } from './message.entity';
 
 @Entity({ name: 'users' })
