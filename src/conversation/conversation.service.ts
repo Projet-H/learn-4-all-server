@@ -94,6 +94,7 @@ export class ConversationService {
   queryGetAllConversations(getConversationsDto: GetConversationsDto) {
     return this.conversationRepository.createQueryBuilder("c")
       .innerJoinAndSelect("c.student", "u")
+      .innerJoinAndSelect("c.teacher", "t")
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
       .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
       .getMany();
