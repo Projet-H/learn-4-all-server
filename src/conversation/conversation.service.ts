@@ -34,7 +34,7 @@ export class ConversationService {
   async createConversation(client : Socket, createConversationDto : CreateConversationDto) {
       const conversation = new ConversationEntity();
       const subject = await this.queryFindSubject(createConversationDto);
-      if(!subject) return client.emit('error-create-conversation', 'Subject not found');
+      if(!subject) return client.emit('not-found', 'Subject not found');
       Object.assign(conversation, createConversationDto);
       conversation.subject = subject;
       conversation.student = client.handshake.user;
@@ -44,7 +44,7 @@ export class ConversationService {
   }
 
   async joinConversation(client : Socket, joinConversationDto : JoinConversationDto) {
-      const conversation = await this.conversationRepository.findOne(joinConversationDto.id, {relations: ['teacher', 'messages']});
+      const conversation = await this.conversationRepository.findOne(joinConversationDto.conversationId, {relations: ['teacher', 'messages']});
       if(!conversation.teacher && client.handshake.user.role == Role.Teacher) {
         conversation.teacher = client.handshake.user;
         await this.conversationRepository.save(conversation);
@@ -57,11 +57,10 @@ export class ConversationService {
   async sendMessage(client: Socket, sendMessageDto: SendMessageDto) {
       const conversation = await this.conversationRepository.findOne(sendMessageDto.conversationId);
       const message = new MessageEntity();
-      delete sendMessageDto.conversationId;
       message.user = client.handshake.user;
       message.conversation = conversation;
       Object.assign(message, sendMessageDto);
-      await this.messageRepository.save(conversation);
+      await this.messageRepository.save(message);
       client.to(conversation.id).emit('sent-message', message);
   }
 
@@ -101,7 +100,7 @@ export class ConversationService {
       .where("u.id = :userId", {userId: user.id})
       .getMany();
   }
-
+  
   queryGetAllConversations(getConversationsDto: GetConversationsDto, user: UserEntity) {
     return this.conversationRepository.createQueryBuilder("c")
       .innerJoinAndSelect("c.student", "u")
