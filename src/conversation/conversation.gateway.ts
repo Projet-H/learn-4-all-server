@@ -40,7 +40,7 @@ export class ConversationGateway implements OnGatewayInit, OnGatewayConnection, 
 
   @SubscribeMessage('send-message')
   onSendMessageConversation(client: Socket, sendMessageDto : SendMessageDto) {
-    return this.conversationService.sendMessage(client, sendMessageDto);
+    return this.conversationService.sendMessage(client, sendMessageDto, this.server);
   }
 
   @SubscribeMessage('report-message')

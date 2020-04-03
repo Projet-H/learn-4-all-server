@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { ConversationEntity } from '../entities/conversation.entity';
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
 import { CreateConversationDto } from './dto/createConversation.dto';
 import { JoinConversationDto } from './dto/joinConversation.dto';
 import { Role } from '../enums/role.enum';
@@ -54,14 +54,14 @@ export class ConversationService {
       client.to(conversation.id).emit('user-joined-conversation', client.handshake.user);
   }
 
-  async sendMessage(client: Socket, sendMessageDto: SendMessageDto) {
+  async sendMessage(client: Socket, sendMessageDto: SendMessageDto, server: Server) {
       const conversation = await this.conversationRepository.findOne(sendMessageDto.conversationId);
       const message = new MessageEntity();
       message.user = client.handshake.user;
       message.conversation = conversation;
       Object.assign(message, sendMessageDto);
       await this.messageRepository.save(message);
-      client.in(conversation.id).emit('sent-message', message);
+      server.in(conversation.id).emit('sent-message', message);
   }
 
   async reportMessage(client: Socket, reportMessage: ReportMessageDto) {
