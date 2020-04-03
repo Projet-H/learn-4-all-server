@@ -98,7 +98,7 @@ export class ConversationService {
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
       .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
       .where("t.id = :userId", {userId: user.id})
-      .orWhere("c.teacher IS NULL")
+      .orWhere("t.id IS NULL")
       .getMany();
   }
 
