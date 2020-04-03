@@ -77,7 +77,7 @@ export class ConversationService {
     if(user.role == Role.Student) {
       conversations = await this.queryGetAllConversationsStudent(getConversationsDto, user);
     } else {
-      conversations = await this.queryGetAllConversations(getConversationsDto);
+      conversations = await this.queryGetAllConversations(getConversationsDto, user);
     }
     client.emit('get-conversations-response', conversations);
   }
@@ -91,12 +91,14 @@ export class ConversationService {
       .getMany();
   }
 
-  queryGetAllConversations(getConversationsDto: GetConversationsDto) {
+  queryGetAllConversations(getConversationsDto: GetConversationsDto, user: UserEntity) {
     return this.conversationRepository.createQueryBuilder("c")
       .innerJoinAndSelect("c.student", "u")
       .leftJoinAndSelect("c.teacher", "t")
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
       .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
+      .where("t.id = :userId", {userId: user.id})
+      .orWhere("t IS NULL")
       .getMany();
   }
 

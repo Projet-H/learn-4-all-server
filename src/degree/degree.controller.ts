@@ -27,11 +27,6 @@ export class DegreeController {
         return this.degreeService.getAll(false);
     }
 
-    @Get(':slug')
-    getOne(@Param('slug') slug: string) {
-        return this.degreeService.getOne(slug);
-    }
-
     @Put(':id')
     @UseGuards(AdminAuthGuard)
     active(@Param('id') id: number) {

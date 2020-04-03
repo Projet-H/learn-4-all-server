@@ -22,10 +22,6 @@ export class DegreeService {
     return this.degreesRepository.find({active: active});
   }
 
-  getOne(slug: string) {
-    return this.degreesRepository.findOne({slug: slug}, {relations: ['subjects']});
-  }
-
   async active(id: number) {
     const degree: DegreeEntity = await this.degreesRepository.findOne({ id: id });
     degree.active = true;
