@@ -32,10 +32,10 @@ export class ConversationService {
   async createConversation(client : Socket, createConversationDto : CreateConversationDto) {
       const conversation = new ConversationEntity();
       const subject = await this.queryFindSubject(createConversationDto);
-      if(!subject) client.emit('error-create-conversation', 'Subject not found');
+      if(!subject) return client.emit('error-create-conversation', 'Subject not found');
+      Object.assign(conversation, createConversationDto);
       conversation.subject = subject;
       conversation.student = client.handshake.user;
-      Object.assign(conversation, createConversationDto);
       await this.conversationRepository.save(conversation);
       client.join(conversation.id);
       client.emit('create-conversation-response', conversation);
