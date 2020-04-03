@@ -82,9 +82,16 @@ export class ConversationService {
     client.emit('get-conversations-response', conversations);
   }
 
+  // async getConversation(client: Socket, getConversationsDto : GetConversationsDto) {
+  //   const user = client.handshake.user;
+  //   const conversation: ConversationEntity = await this.conversationRepository.findOne();
+  //   client.emit('get-conversation-response', conversation);
+  // }
+
   queryGetAllConversationsStudent(getConversationsDto: GetConversationsDto, user: UserEntity) {
     return this.conversationRepository.createQueryBuilder("c")
       .innerJoinAndSelect("c.student", "u")
+      .leftJoinAndSelect("c.teacher", "t")
       .innerJoin("c.subject", "s", "s.slug = :subjectSlug", {subjectSlug: getConversationsDto.subjectSlug})
       .innerJoin("s.degree", "d", "d.slug = :degreeSlug", {degreeSlug: getConversationsDto.degreeSlug})
       .where("u.id = :userId", {userId: user.id})
