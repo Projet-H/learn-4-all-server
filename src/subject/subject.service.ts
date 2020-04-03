@@ -24,8 +24,8 @@ export class SubjectService {
     return this.subjectsRepository.save(subject);
   }
 
-  async findAll() {
-    return await this.subjectsRepository.find({active: true});
+  async getAll(active: boolean) {
+    return await this.subjectsRepository.find({active: active});
   }
 
   async get(id: number) {
@@ -34,6 +34,12 @@ export class SubjectService {
       throw new SubjectNotFoundException(id);
     }
     return subject;
+  }
+
+  async active(id: number) {
+    const subject: SubjectEntity = await this.subjectsRepository.findOne({ id: id });
+    subject.active = true;
+    return this.subjectsRepository.save(subject);
   }
 
   async delete(id: number){

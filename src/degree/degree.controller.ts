@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Param, Delete, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Param, Delete, Get, UseGuards, Put } from '@nestjs/common';
 import { DegreeEntity } from '../entities/degree.entity';
 import { DegreeDto } from './degree.dto';
 import { UserAuthGuard } from '../auth/roles/user/user.guard';
@@ -17,8 +17,14 @@ export class DegreeController {
     }
 
     @Get()
-    getAll() {
-        return this.degreeService.getAll();
+    getAllActive() {
+        return this.degreeService.getAll(true);
+    }
+
+    @Get('/inactive')
+    @UseGuards(AdminAuthGuard)
+    getAllInactive() {
+        return this.degreeService.getAll(false);
     }
 
     @Get(':slug')
@@ -26,9 +32,15 @@ export class DegreeController {
         return this.degreeService.getOne(slug);
     }
 
+    @Put(':id')
+    @UseGuards(AdminAuthGuard)
+    active(@Param('id') id: number) {
+        return this.degreeService.active(id);
+    }
+
     @Delete(':id')
     @UseGuards(AdminAuthGuard)
-    remove(@Param('id')  id: number) {
+    remove(@Param('id') id: number) {
         return this.degreeService.remove(id);
     }
     

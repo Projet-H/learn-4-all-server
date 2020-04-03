@@ -18,12 +18,18 @@ export class DegreeService {
     return this.degreesRepository.save(degree);
   }
 
-  getAll(){
-    return this.degreesRepository.find({active: true});
+  getAll(active: boolean){
+    return this.degreesRepository.find({active: active});
   }
 
   getOne(slug: string) {
     return this.degreesRepository.findOne({slug: slug}, {relations: ['subjects']});
+  }
+
+  async active(id: number) {
+    const degree: DegreeEntity = await this.degreesRepository.findOne({ id: id });
+    degree.active = true;
+    return this.degreesRepository.save(degree);
   }
 
   remove(id: number) {

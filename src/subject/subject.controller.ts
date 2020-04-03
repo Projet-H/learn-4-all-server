@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Param, Delete, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Param, Delete, Get, UseGuards, Put } from '@nestjs/common';
 import { SubjectEntity } from '../entities/subject.entity';
 import { SubjectDto } from './dto/subject.dto';
 import { SubjectService } from './subject.service';
@@ -19,13 +19,25 @@ export class SubjectController {
     }
 
     @Get()
-    findAll(){
-        return this.subjectService.findAll();
+    getAllActive(){
+        return this.subjectService.getAll(true);
+    }
+
+    @Get('/inactive')
+    @UseGuards(AdminAuthGuard)
+    getAllInactive(){
+        return this.subjectService.getAll(false);
     }
 
     @Get(':id')
     get(@Param('id') subjectId : number)  {
         return this.subjectService.get(subjectId);
+    }
+
+    @Put(':id')
+    @UseGuards(AdminAuthGuard)
+    active(@Param('id') id: number) {
+        return this.subjectService.active(id);
     }
 
     @UseGuards(AdminAuthGuard)
