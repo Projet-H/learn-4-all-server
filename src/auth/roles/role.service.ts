@@ -15,7 +15,7 @@ export class RoleService  {
     const user = await this.validateToken(payload.email, payload.id, exception);
     if (user.role === undefined || isNotAuthorized(user))
       throw exception;
-    return { id: user.id, email: user.email, role: user.role };
+    return user;
   }
 
   private async validateToken(email: string, id: number, exception: Error): Promise<any> {
