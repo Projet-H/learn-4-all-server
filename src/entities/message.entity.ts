@@ -9,7 +9,7 @@ export class MessageEntity extends BaseEntity{
   @Column({type: "text"})
   content: string;
 
-  @Column()
+  @Column({default: false})
   reported: boolean;
 
   @ManyToOne(() => UserEntity, user => user.messages)
@@ -17,4 +17,5 @@ export class MessageEntity extends BaseEntity{
 
   @ManyToOne(() => ConversationEntity, conversation => conversation.messages)
   conversation: ConversationEntity;
+
 }
