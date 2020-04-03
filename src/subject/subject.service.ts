@@ -24,8 +24,13 @@ export class SubjectService {
     return this.subjectsRepository.save(subject);
   }
 
-  async getAll(active: boolean) {
-    return await this.subjectsRepository.find({active: active});
+  async getAllActive(degreeSlug: string) {
+    const degree: DegreeEntity = await this.degreeRepository.findOne({slug: degreeSlug});
+    return this.subjectsRepository.find({active: true, degree: degree});
+  }
+
+  getAllInactive() {
+    return this.subjectsRepository.find({active: false});
   }
 
   async get(id: number) {
