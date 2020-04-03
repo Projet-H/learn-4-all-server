@@ -16,7 +16,7 @@ export class ConversationEntity extends BaseEntity{
   @ManyToOne(() => SubjectEntity, subject => subject.conversations)
   subject: SubjectEntity;
 
-  @ManyToOne(() => UserEntity, user => user.conversationWithStudents)
+  @ManyToOne(() => UserEntity, user => user.conversationWithStudents, {nullable: true})
   teacher: UserEntity;
 
   @ManyToOne(() => UserEntity, user => user.conversationWithTeachers)

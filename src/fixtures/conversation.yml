@@ -7,3 +7,8 @@ items:
     student: '@student'
     teacher: '@teacher'
     subject: '@math'
+  english-waiting:
+    title: 'Past perfect'
+    description: 'I did not understand the past perfect'
+    student: '@student'
+    subject: '@english'
