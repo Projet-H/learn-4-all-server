@@ -5,15 +5,19 @@ items:
     content: '{{lorem.paragraphs}}'
     conversation: '@pythagoras'
     user: '@student'
+    reported: false
   pythagoras-m2:
     content: '{{lorem.paragraphs}}'
     conversation: '@pythagoras'
     user: '@teacher'
+    reported: true
   pythagoras-m3:
     content: '{{lorem.paragraphs}}'
     conversation: '@pythagoras'
     user: '@student'
+    reported: false
   pythagoras-m4:
     content: '{{lorem.paragraphs}}'
     conversation: '@pythagoras'
     user: '@student'
+    reported: false

@@ -14,6 +14,7 @@ import { WebSocketGuard } from '../auth/roles/socket/webSocket.guard';
 import { JoinConversationDto } from './dto/joinConversation.dto';
 import { SendMessageDto } from './dto/sendMessage.dto';
 import { GetConversationsDto } from './dto/getConversations.dto';
+import { ReportMessageDto } from './dto/reportMessage.dto';
 
 @WebSocketGateway(Number(process.env.SOCKET_PORT))
 @UseGuards(WebSocketGuard)
@@ -39,6 +40,11 @@ export class ConversationGateway implements OnGatewayInit, OnGatewayConnection, 
   @SubscribeMessage('send-message')
   onSendMessageConversation(client: Socket, sendMessageDto : SendMessageDto) {
     return this.conversationService.sendMessage(client, sendMessageDto);
+  }
+
+  @SubscribeMessage('report-message')
+  onReportMessage(client: Socket, reportMessageDto : ReportMessageDto) {
+    return this.conversationService.reportMessage(client, reportMessageDto);
   }
 
   @SubscribeMessage('get-conversations')

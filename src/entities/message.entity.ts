@@ -9,6 +9,9 @@ export class MessageEntity extends BaseEntity{
   @Column({type: "text"})
   content: string;
 
+  @Column()
+  reported: boolean;
+
   @ManyToOne(() => UserEntity, user => user.messages)
   user: UserEntity;
 

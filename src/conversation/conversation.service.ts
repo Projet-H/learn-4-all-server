@@ -11,6 +11,7 @@ import { SendMessageDto } from './dto/sendMessage.dto';
 import { GetConversationsDto } from './dto/getConversations.dto';
 import { MessageEntity } from '../entities/message.entity';
 import { SubjectEntity } from '../entities/subject.entity';
+import { ReportMessageDto } from './dto/reportMessage.dto';
 
 @Injectable()
 export class ConversationService {
@@ -61,6 +62,13 @@ export class ConversationService {
       Object.assign(message, sendMessageDto);
       await this.messageRepository.save(conversation);
       client.to(conversation.id).emit('sent-message', message);
+  }
+
+  async reportMessage(client: Socket, reportMessage: ReportMessageDto) {
+    let message: MessageEntity = await this.messageRepository.findOne(reportMessage.id, {relations: ['conversation']});
+    message.reported = true;
+    message = await this.messageRepository.save(message);
+    client.to(message.conversation.id).emit('report-message', message);
   }
 
   async getConversations(client: Socket, getConversationsDto : GetConversationsDto) {
