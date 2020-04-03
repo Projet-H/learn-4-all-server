@@ -61,7 +61,7 @@ export class ConversationService {
       message.conversation = conversation;
       Object.assign(message, sendMessageDto);
       await this.messageRepository.save(message);
-      client.to(conversation.id).emit('sent-message', message);
+      client.in(conversation.id).emit('sent-message', message);
   }
 
   async reportMessage(client: Socket, reportMessage: ReportMessageDto) {
@@ -83,7 +83,7 @@ export class ConversationService {
   }
 
   async getConversation(client: Socket, getConversationDto : GetConversationDto) {
-    const conversation: ConversationEntity = await this.conversationRepository.findOne(getConversationDto.id);
+    const conversation: ConversationEntity = await this.conversationRepository.findOne(getConversationDto.conversationId);
     const messages: MessageEntity[] = await this.messageRepository.find({
       where: { conversation: conversation },
       order: {createDateTime: 'ASC'},
