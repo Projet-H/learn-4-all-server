@@ -1,15 +1,71 @@
 entity: DegreeEntity
 parameters: {}
 items:
-  bts:
-    name: 'BTS'
-    slug: 'bts'
+  troisieme:
+    name: '3ème'
+    slug: 'troisieme'
     active: true
-  dut:
-    name: 'DUT'
-    slug: 'dut'
+  premiere:
+    name: 'Première'
+    slug: 'premiere'
     active: true
-  bac-s:
-    name: 'Bac S'
-    slug: 'bac-s'
-    active: false
+  terminale:
+    name: 'Terminale'
+    slug: 'terminale'
+    active: true
+  btsmanagementcommercialoperationnel:
+    name: 'BTS Management commercial Opérationnel'
+    slug: 'bts-management-commercial-operationnel'
+    active: true
+  btsnegociationetdigitalisationdelarelationclient:
+    name: 'BTS Négociation et digitalisation de la Relation Client'
+    slug: 'bts-negociation-et-digitalisation-de-la-relation-client'
+    active: true
+  btscommerceinternationalareferentieleuropeen:
+    name: 'Commerce international à référentiel européen'
+    slug: 'commerce-international-a-referentiel-europeen'
+    active: true
+  btscomptabiliteetgestion:
+    name: 'Comptabilité et gestion'
+    slug: 'comptabilie-et-gestion'
+    active: true
+  btsgestiondelapme:
+    name: 'Gestion de la PME'
+    slug: 'gestion-de-la-pme'
+    active: true
+  btscommunication:
+    name: 'Communication'
+    slug: 'communication'
+    active: true
+  btssupportalactionmanageriale:
+    name: 'Support à l’action managériale'
+    slug: 'suppor-a-l-action-manageriale'
+    active: true
+  duttechniquesdecommercialisation:
+    name: 'DUT Techniques de commercialisation'
+    slug: 'dut-techniques-de-commercialisation'
+    active: true
+  dutgestiondesentreprisesetdesadministrations:
+    name: 'DUT Gestion des entreprises et des administrations'
+    slug: 'dut-gestion-des-entreprises-et-des-administrations'
+    active: true
+  dutinformatique:
+    name: 'DUT Informatique'
+    slug: 'dut-informatique'
+    active: true
+  dutgeniemecaniqueetproductique:
+    name: 'DUT Génie mécanique et productique'
+    slug: 'dut-genie-mecanique-et-productique'
+    active: true
+  dutgenieelectriqueetinformatiqueindustrielle:
+    name: 'DUT Génie électrique et informatique industrielle'
+    slug: 'dut-genie-electrique-et-informatique-industrielle'
+    active: true
+  dutgeniebiologiqueoptionanalysesbiologiquesetbiochimiques:
+    name: 'DUT Génie biologique Option analyses biologiques et biochimiques'
+    slug: 'dut-genie-biologique-option-analyses-biologiques-et-biochimiques'
+    active: true
+  dutmetiersdumultimediaetdelinternet:
+    name: 'DUT Métiers du multimédia et de l internet'
+    slug: 'dut-metiers-du-multimedia-et-de-l-internet'
+    active: true

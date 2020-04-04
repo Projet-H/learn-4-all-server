@@ -1,14 +1,3 @@
 entity: ConversationEntity
 parameters: {}
 items:
-  pythagoras:
-    title: 'Problem pythagoras'
-    description: 'I did not understand how can i apply the theorem'
-    student: '@student'
-    teacher: '@teacher'
-    subject: '@math'
-  english-waiting:
-    title: 'Past perfect'
-    description: 'I did not understand the past perfect'
-    student: '@student'
-    subject: '@english'
