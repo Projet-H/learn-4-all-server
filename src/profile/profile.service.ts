@@ -79,14 +79,19 @@ export class ProfileService {
 
   async getMyConversations(userId : number) {
     const user = await this.userRepository.findOne(userId, {relations: [
-        'conversationWithTeachers', 'conversationWithTeachers.subject', 'conversationWithTeachers.subject.degree'
+      'conversationWithStudents', 'conversationWithStudents.subject', 'conversationWithStudents.subject.degree',
+        'conversationWithTeachers', 'conversationWithTeachers.subject', 'conversationWithTeachers.subject.degree',
       ]});
 
     if(!user) {
       throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
     }
 
-    return user.conversationWithTeachers;
+    if(user.role == Role.Teacher) {
+      return user.conversationWithStudents;
+    } else {
+      return user.conversationWithTeachers;
+    }
   }
 
   private static isRoleAlreadySet(user: UserEntity) : boolean {

@@ -42,6 +42,7 @@ export class ProfileController {
   }
 
   @Get(':id/conversations')
+  @UseGuards(EditProfileGuard)
   getMyConversations(@Param() params : ParamsDto) {
     return this.profileService.getMyConversations(params.id);
   }
