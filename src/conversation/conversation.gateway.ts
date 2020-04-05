@@ -63,7 +63,7 @@ export class ConversationGateway implements OnGatewayInit, OnGatewayConnection, 
   }
 
   handleConnection(): any {
-    console.log('connected');
+    console.log('connect');
   }
 
   handleDisconnect(): any {

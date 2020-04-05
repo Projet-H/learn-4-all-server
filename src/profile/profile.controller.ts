@@ -40,4 +40,9 @@ export class ProfileController {
   editDegreesAndSubjects(@Param() params : ParamsDto, @Body() SubjectsFollowed : SubjectsFollowedDto) {
     return this.profileService.editDegreesAndSubjects(params.id, SubjectsFollowed);
   }
+
+  @Get(':id/conversations')
+  getMyConversations(@Param() params : ParamsDto) {
+    return this.profileService.getMyConversations(params.id);
+  }
 }

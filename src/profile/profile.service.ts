@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,6 +11,7 @@ import slug from 'slugify';
 import { Role } from '../enums/role.enum';
 import { UserNotFoundException } from './exceptions/userNotFound.exception';
 import { JwtService } from '@nestjs/jwt';
+import { ConversationEntity } from '../entities/conversation.entity';
 
 
 @Injectable()
@@ -24,6 +25,8 @@ export class ProfileService {
 
     @InjectRepository(SubjectEntity)
     private subjectRepository: Repository<SubjectEntity>,
+    @InjectRepository(ConversationEntity)
+    private conversationRepository: Repository<ConversationEntity>,
     private jwtService: JwtService
   ) {}
 
@@ -74,8 +77,27 @@ export class ProfileService {
     return await this.userRepository.save(user);
   }
 
+  async getMyConversations(userId : number) {
+    const user = await this.userRepository.findOne(userId, {relations: [
+      'conversationWithStudents', 'conversationWithStudents.subject', 'conversationWithStudents.subject.degree',
+        'conversationWithTeachers', 'conversationWithTeachers.subject', 'conversationWithTeachers.subject.degree'
+      ]});
+
+    if(!user) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+    }
+
+    if(Role.Teacher) {
+      return user.conversationWithStudents;
+    } else {
+      return user.conversationWithTeachers;
+    }
+  }
+
   private static isRoleAlreadySet(user: UserEntity) : boolean {
     return user.role != Role.NONE;
   }
+
+
 
 }
