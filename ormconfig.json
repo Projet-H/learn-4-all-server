@@ -1,10 +1,10 @@
 {
   "type": "postgres",
-  "host": "127.0.0.1",
+  "host": "db_hostname",
   "port": 5432,
-  "username": "root",
-  "password": "root",
-  "database": "learn",
+  "username": "groupe6",
+  "password": "groupe6",
+  "database": "groupe6",
   "entities": [
     "dist/entities/*.entity.js"
   ],
