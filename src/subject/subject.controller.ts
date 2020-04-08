@@ -18,15 +18,16 @@ export class SubjectController {
         return this.subjectService.create(subjectDto);
     }
 
-    @Get(':degreeSlug')
-    getAllActive(@Param('degreeSlug') degreeSlug: string){
-        return this.subjectService.getAllActive(degreeSlug);
-    }
-
-    @Get('/inactive')
+    @Get('inactive')
     @UseGuards(AdminAuthGuard)
     getAllInactive(){
         return this.subjectService.getAllInactive();
+    }
+
+    @Get(':degreeSlug')
+    getAllActive(@Param('degreeSlug') degreeSlug: string){
+        console.log('test');
+        return this.subjectService.getAllActive(degreeSlug);
     }
 
     @Get(':id')

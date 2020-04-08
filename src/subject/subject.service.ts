@@ -29,8 +29,8 @@ export class SubjectService {
     return this.subjectsRepository.find({active: true, degree: degree});
   }
 
-  getAllInactive() {
-    return this.subjectsRepository.find({active: false});
+  async getAllInactive() {
+    return await this.subjectsRepository.find({active: false});
   }
 
   async get(id: number) {
